@@ -38,6 +38,13 @@ _GRUPO_ROL = {"POR": "POR", "DFC": "DEF", "LAT": "DEF", "CAR": "DEF", "MCD": "ME
 
 
 def fuera_de_posicion(jugador, rol):
+    """True si el jugador juega fuera de su línea natural.
+
+    Un extremo (ED/EI) de volante por banda no cuenta como fuera de posición:
+    en un 4-4-2 ese es su puesto habitual.
+    """
+    if pl.NATURAL[jugador] in ("ED", "EI") and rol == "MED":
+        return False
     return _GRUPO[pl.NATURAL[jugador]] != _GRUPO_ROL[rol]
 
 

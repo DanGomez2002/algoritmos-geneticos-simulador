@@ -3,7 +3,7 @@ generar_resultados.py
 ---------------------
 Corre todos los experimentos y guarda figuras y números en resultados/.
 
-    python generar_resultados.py      (tarda unos cuatro minutos)
+    python generar_resultados.py      (tarda unos seis minutos)
 """
 
 import json
@@ -178,6 +178,49 @@ def figura_formaciones(datos, lesion_datos):
     guardar(fig, "formaciones_y_lesion.png")
 
 
+def figura_importancia(datos):
+    """Cuánto cae el puntaje si se lesiona cada titular, y quién lo reemplaza."""
+    js = datos["jugadores"][::-1]
+    fig, ax = plt.subplots(figsize=(10, 5))
+    y = np.arange(len(js))
+    ax.barh(y, [d["caida"] for d in js], color=PALETA[4], alpha=0.85)
+    for yi, d in zip(y, js):
+        cambio = ", ".join(d["entran"] + d["se_mueven"])
+        ax.text(d["caida"] + 0.6, yi, cambio, va="center", fontsize=7.5)
+    ax.set_yticks(y)
+    ax.set_yticklabels([f"{d['corto']} ({d['puesto']})" for d in js], fontsize=8.5)
+    ax.set_xlabel("Puntos que pierde el equipo si ese titular no puede jugar")
+    ax.set_xlim(0, max(d["caida"] for d in js) * 1.9)
+    ax.set_title(f"Importancia de cada titular (4-4-2, alineación completa {datos['puntaje_completo']:.1f})",
+                 fontsize=10)
+    ax.grid(axis="x", alpha=0.3)
+    guardar(fig, "importancia_titulares.png")
+
+
+def figura_quimica(datos):
+    """Rendimiento individual contra química según el peso λ."""
+    lams = list(datos)
+    x = np.arange(len(lams))
+    rend = [datos[l]["rendimiento"] for l in lams]
+    quim = [datos[l]["quimica"] for l in lams]
+    fig, ax = plt.subplots(figsize=(10, 4.6))
+    ax.bar(x, rend, color=PALETA[0], alpha=0.85, label="Rendimiento de los titulares")
+    ax.bar(x, quim, bottom=rend, color=PALETA[2], alpha=0.85, label="Química (λ · Σ química)")
+    for xi, l in zip(x, lams):
+        entra = datos[l]["cambian_frente_a_lambda0"]
+        texto = "Entran: " + ", ".join(entra) if entra else "Alineación sin química"
+        ax.text(xi, rend[xi] + quim[xi] + 3, f"{rend[xi] + quim[xi]:.1f}\n{texto}", ha="center",
+                va="bottom", fontsize=7.5)
+    ax.set_xticks(x)
+    ax.set_xticklabels([f"λ = {l}" for l in lams])
+    ax.set_ylim(780, max(r + q for r, q in zip(rend, quim)) + 45)
+    ax.set_ylabel("Puntaje del equipo")
+    ax.set_title("Peso de la química: cuándo cambia la mejor alineación (4-4-2)", fontsize=10)
+    ax.legend(fontsize=8, loc="upper left")
+    ax.grid(axis="y", alpha=0.3)
+    guardar(fig, "efecto_quimica.png")
+
+
 def convertir(o):
     if isinstance(o, dict):
         return {str(k): convertir(v) for k, v in o.items()}
@@ -216,6 +259,11 @@ def principal():
     form = ex.formaciones()
     les = ex.lesion()
     figura_formaciones(form, les)
+    print("Experimentos con el fenómeno: importancia de cada titular y peso de la química...")
+    imp = ex.importancia_jugadores()
+    figura_importancia(imp)
+    bq = ex.barrido_quimica()
+    figura_quimica(bq)
 
     for grupo in [pob, ops] + list(barridos.values()):
         for v in grupo.values():
@@ -224,7 +272,8 @@ def principal():
     with open(os.path.join(CARPETA, "resultados.json"), "w", encoding="utf-8") as fh:
         json.dump(convertir({"mejor_conocido_442": objetivo, "evolucion_semilla7": evol,
                              "poblacion": pob, "operadores": ops, "parametros": barridos,
-                             "quimica_vs_hungaro": quim, "formaciones": form, "lesion": les}),
+                             "quimica_vs_hungaro": quim, "formaciones": form, "lesion": les,
+                             "importancia_titulares": imp, "barrido_quimica": bq}),
                   fh, ensure_ascii=False, indent=1)
     print("Listo: resultados/resultados.json")
 

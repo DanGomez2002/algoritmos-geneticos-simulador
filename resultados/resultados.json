@@ -370,11 +370,11 @@
     "Perdomo",
     "Calderón",
     "Monroy",
-    "Cardona",
     "Restrepo",
+    "Cardona",
     "Guzmán",
-    "Mosquera",
-    "Patiño"
+    "Patiño",
+    "Mosquera"
    ],
    "ag_medio": 828.7145666666668,
    "exito_pct": 86.66666666666667
@@ -402,8 +402,8 @@
     "Silva",
     "Murcia",
     "Monroy",
-    "Restrepo",
     "Ospina",
+    "Restrepo",
     "Guzmán",
     "Mosquera",
     "Patiño"
@@ -456,15 +456,15 @@
     ],
     [
      "MC",
-     "Restrepo",
-     74.5,
-     "MC"
-    ],
-    [
-     "MC",
      "Ospina",
      71.4,
      "MCD"
+    ],
+    [
+     "MC",
+     "Restrepo",
+     74.5,
+     "MC"
     ],
     [
      "MI",
@@ -486,13 +486,13 @@
     ]
    ],
    "banco": [
-    "Diego Bermúdez",
+    "Felipe Cardona",
+    "Óscar Trujillo",
     "Brayan Castaño",
     "Nicolás Zapata",
-    "Harold Calderón",
-    "Óscar Trujillo",
-    "Felipe Cardona",
-    "Samuel Cuéllar"
+    "Diego Bermúdez",
+    "Samuel Cuéllar",
+    "Harold Calderón"
    ],
    "optimo_local": true
   },
@@ -569,13 +569,13 @@
     ]
    ],
    "banco": [
-    "Samuel Cuéllar",
-    "Julián Patiño",
-    "Diego Bermúdez",
-    "Brayan Castaño",
     "Luis Ángel Murcia",
+    "Julián Patiño",
     "Alexis Guzmán",
-    "Óscar Trujillo"
+    "Óscar Trujillo",
+    "Brayan Castaño",
+    "Diego Bermúdez",
+    "Samuel Cuéllar"
    ],
    "optimo_local": true
   },
@@ -640,25 +640,25 @@
     ],
     [
      "DC",
-     "Mosquera",
-     82.2,
+     "Patiño",
+     75.5,
      "DC"
     ],
     [
      "DC",
-     "Patiño",
-     75.5,
+     "Mosquera",
+     82.2,
      "DC"
     ]
    ],
    "banco": [
-    "Samuel Cuéllar",
-    "Alexis Guzmán",
-    "Nicolás Zapata",
-    "Diego Bermúdez",
     "Óscar Trujillo",
     "Luis Ángel Murcia",
-    "Felipe Cardona"
+    "Felipe Cardona",
+    "Alexis Guzmán",
+    "Diego Bermúdez",
+    "Samuel Cuéllar",
+    "Nicolás Zapata"
    ],
    "optimo_local": true
   }
@@ -678,11 +678,11 @@
    ],
    [
     "DFC",
-    "Silva"
+    "Perdomo"
    ],
    [
     "DFC",
-    "Perdomo"
+    "Silva"
    ],
    [
     "LI",
@@ -694,11 +694,11 @@
    ],
    [
     "MC",
-    "Ospina"
+    "Cardona"
    ],
    [
     "MC",
-    "Cardona"
+    "Calderón"
    ],
    [
     "MI",
@@ -715,6 +715,11 @@
   ],
   "cambios": [
    [
+    "Ospina",
+    "MC",
+    "banco"
+   ],
+   [
     "Restrepo",
     "MC",
     "banco"
@@ -723,7 +728,445 @@
     "Cardona",
     "banco",
     "MC"
+   ],
+   [
+    "Calderón",
+    "banco",
+    "MC"
    ]
   ]
+ },
+ "importancia_titulares": {
+  "puntaje_completo": 851.2545,
+  "jugadores": [
+   {
+    "jugador": "Mateo Ríos",
+    "corto": "Ríos",
+    "puesto": "POR",
+    "puntaje_sin_el": 803.4045000000001,
+    "caida": 47.84999999999991,
+    "entran": [
+     "Cuéllar (POR)"
+    ],
+    "se_mueven": []
+   },
+   {
+    "jugador": "Esteban Monroy",
+    "corto": "Monroy",
+    "puesto": "MD",
+    "puntaje_sin_el": 841.7520000000002,
+    "caida": 9.502499999999827,
+    "entran": [
+     "Cardona (MC)"
+    ],
+    "se_mueven": [
+     "Restrepo (MC → MD)"
+    ]
+   },
+   {
+    "jugador": "Yeison Mosquera",
+    "corto": "Mosquera",
+    "puesto": "DC",
+    "puntaje_sin_el": 842.0770000000001,
+    "caida": 9.177499999999895,
+    "entran": [
+     "Zapata (DC)"
+    ],
+    "se_mueven": []
+   },
+   {
+    "jugador": "Jhon Fredy Perdomo",
+    "corto": "Perdomo",
+    "puesto": "DFC",
+    "puntaje_sin_el": 843.4695000000002,
+    "caida": 7.7849999999998545,
+    "entran": [
+     "Castaño (DFC)",
+     "Cardona (MC)"
+    ],
+    "se_mueven": [
+     "Ospina (MC → DFC)"
+    ]
+   },
+   {
+    "jugador": "Cristian Vargas",
+    "corto": "Vargas",
+    "puesto": "LD",
+    "puntaje_sin_el": 844.5520000000001,
+    "caida": 6.702499999999873,
+    "entran": [
+     "Cardona (MC)"
+    ],
+    "se_mueven": [
+     "Ospina (MC → LD)"
+    ]
+   },
+   {
+    "jugador": "Santiago Restrepo",
+    "corto": "Restrepo",
+    "puesto": "MC",
+    "puntaje_sin_el": 846.152,
+    "caida": 5.102499999999964,
+    "entran": [
+     "Cardona (MC)",
+     "Calderón (MC)"
+    ],
+    "se_mueven": []
+   },
+   {
+    "jugador": "Luis Ángel Murcia",
+    "corto": "Murcia",
+    "puesto": "LI",
+    "puntaje_sin_el": 848.0699999999999,
+    "caida": 3.184500000000071,
+    "entran": [
+     "Cardona (MC)",
+     "Zapata (MI)"
+    ],
+    "se_mueven": [
+     "Ospina (MC → DFC)",
+     "Silva (DFC → LI)"
+    ]
+   },
+   {
+    "jugador": "Alexis Guzmán",
+    "corto": "Guzmán",
+    "puesto": "MI",
+    "puntaje_sin_el": 848.0699999999999,
+    "caida": 3.184500000000071,
+    "entran": [
+     "Cardona (MC)",
+     "Zapata (MI)"
+    ],
+    "se_mueven": [
+     "Ospina (MC → DFC)",
+     "Silva (DFC → LI)"
+    ]
+   },
+   {
+    "jugador": "Julián Patiño",
+    "corto": "Patiño",
+    "puesto": "DC",
+    "puntaje_sin_el": 848.777,
+    "caida": 2.4774999999999636,
+    "entran": [
+     "Zapata (DC)"
+    ],
+    "se_mueven": []
+   },
+   {
+    "jugador": "Kevin Andrés Silva",
+    "corto": "Silva",
+    "puesto": "DFC",
+    "puntaje_sin_el": 849.0695000000001,
+    "caida": 2.1849999999999454,
+    "entran": [
+     "Cardona (MC)"
+    ],
+    "se_mueven": [
+     "Ospina (MC → DFC)"
+    ]
+   },
+   {
+    "jugador": "Daniel Ospina",
+    "corto": "Ospina",
+    "puesto": "MC",
+    "puntaje_sin_el": 849.2520000000002,
+    "caida": 2.002499999999827,
+    "entran": [
+     "Cardona (MC)"
+    ],
+    "se_mueven": []
+   }
+  ]
+ },
+ "barrido_quimica": {
+  "0": {
+   "puntaje": 829.3475000000001,
+   "rendimiento": 829.3475000000001,
+   "quimica": 0.0,
+   "pares_con_quimica": 4,
+   "alineacion": [
+    [
+     "POR",
+     "Ríos"
+    ],
+    [
+     "LD",
+     "Vargas"
+    ],
+    [
+     "DFC",
+     "Ospina"
+    ],
+    [
+     "DFC",
+     "Perdomo"
+    ],
+    [
+     "LI",
+     "Calderón"
+    ],
+    [
+     "MD",
+     "Monroy"
+    ],
+    [
+     "MC",
+     "Restrepo"
+    ],
+    [
+     "MC",
+     "Cardona"
+    ],
+    [
+     "MI",
+     "Guzmán"
+    ],
+    [
+     "DC",
+     "Patiño"
+    ],
+    [
+     "DC",
+     "Mosquera"
+    ]
+   ],
+   "fuera_de_linea": [
+    "Ospina (DFC)",
+    "Calderón (LI)"
+   ],
+   "cambian_frente_a_lambda0": []
+  },
+  "1": {
+   "puntaje": 835.0695000000001,
+   "rendimiento": 828.0695000000001,
+   "quimica": 7.0,
+   "pares_con_quimica": 5,
+   "alineacion": [
+    [
+     "POR",
+     "Ríos"
+    ],
+    [
+     "LD",
+     "Vargas"
+    ],
+    [
+     "DFC",
+     "Ospina"
+    ],
+    [
+     "DFC",
+     "Perdomo"
+    ],
+    [
+     "LI",
+     "Murcia"
+    ],
+    [
+     "MD",
+     "Monroy"
+    ],
+    [
+     "MC",
+     "Restrepo"
+    ],
+    [
+     "MC",
+     "Cardona"
+    ],
+    [
+     "MI",
+     "Guzmán"
+    ],
+    [
+     "DC",
+     "Mosquera"
+    ],
+    [
+     "DC",
+     "Patiño"
+    ]
+   ],
+   "fuera_de_linea": [
+    "Ospina (DFC)"
+   ],
+   "cambian_frente_a_lambda0": [
+    "Murcia"
+   ]
+  },
+  "3": {
+   "puntaje": 851.2545,
+   "rendimiento": 824.2545,
+   "quimica": 27.0,
+   "pares_con_quimica": 6,
+   "alineacion": [
+    [
+     "POR",
+     "Ríos"
+    ],
+    [
+     "LD",
+     "Vargas"
+    ],
+    [
+     "DFC",
+     "Perdomo"
+    ],
+    [
+     "DFC",
+     "Silva"
+    ],
+    [
+     "LI",
+     "Murcia"
+    ],
+    [
+     "MD",
+     "Monroy"
+    ],
+    [
+     "MC",
+     "Ospina"
+    ],
+    [
+     "MC",
+     "Restrepo"
+    ],
+    [
+     "MI",
+     "Guzmán"
+    ],
+    [
+     "DC",
+     "Mosquera"
+    ],
+    [
+     "DC",
+     "Patiño"
+    ]
+   ],
+   "fuera_de_linea": [],
+   "cambian_frente_a_lambda0": [
+    "Murcia",
+    "Silva"
+   ]
+  },
+  "5": {
+   "puntaje": 869.2545,
+   "rendimiento": 824.2545,
+   "quimica": 45.0,
+   "pares_con_quimica": 6,
+   "alineacion": [
+    [
+     "POR",
+     "Ríos"
+    ],
+    [
+     "LD",
+     "Vargas"
+    ],
+    [
+     "DFC",
+     "Silva"
+    ],
+    [
+     "DFC",
+     "Perdomo"
+    ],
+    [
+     "LI",
+     "Murcia"
+    ],
+    [
+     "MD",
+     "Monroy"
+    ],
+    [
+     "MC",
+     "Restrepo"
+    ],
+    [
+     "MC",
+     "Ospina"
+    ],
+    [
+     "MI",
+     "Guzmán"
+    ],
+    [
+     "DC",
+     "Patiño"
+    ],
+    [
+     "DC",
+     "Mosquera"
+    ]
+   ],
+   "fuera_de_linea": [],
+   "cambian_frente_a_lambda0": [
+    "Murcia",
+    "Silva"
+   ]
+  },
+  "10": {
+   "puntaje": 919.1770000000001,
+   "rendimiento": 819.1770000000001,
+   "quimica": 100.0,
+   "pares_con_quimica": 6,
+   "alineacion": [
+    [
+     "POR",
+     "Ríos"
+    ],
+    [
+     "LD",
+     "Vargas"
+    ],
+    [
+     "DFC",
+     "Silva"
+    ],
+    [
+     "DFC",
+     "Perdomo"
+    ],
+    [
+     "LI",
+     "Murcia"
+    ],
+    [
+     "MD",
+     "Monroy"
+    ],
+    [
+     "MC",
+     "Restrepo"
+    ],
+    [
+     "MC",
+     "Zapata"
+    ],
+    [
+     "MI",
+     "Guzmán"
+    ],
+    [
+     "DC",
+     "Patiño"
+    ],
+    [
+     "DC",
+     "Mosquera"
+    ]
+   ],
+   "fuera_de_linea": [],
+   "cambian_frente_a_lambda0": [
+    "Murcia",
+    "Silva",
+    "Zapata"
+   ]
+  }
  }
 }

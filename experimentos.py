@@ -147,3 +147,54 @@ def lesion(formacion="4-4-2", lesionado="Restrepo"):
     return {"lesionado": pl.NOMBRES[j], "puntaje_antes": va, "puntaje_despues": vd,
             "alineacion_despues": [(despues.puestos[p][0], pl.CORTOS[cd[p]]) for p in range(11)],
             "cambios": cambios}
+
+
+# ---------------------------------------------------------------------------
+# Experimentos con el FENÓMENO (cambian las condiciones del equipo, no el algoritmo)
+# ---------------------------------------------------------------------------
+
+def importancia_jugadores(formacion="4-4-2", corridas=4):
+    """Se lesiona a cada titular de la mejor alineación, uno por uno.
+
+    Cuánto cae el puntaje mide qué tan difícil es reemplazar a ese jugador;
+    también se registra quién entra y quién cambia de puesto.
+    """
+    base = ProblemaAlineacion(formacion)
+    v0, c0 = mejor_conocido(base)
+    pos0 = {pl.CORTOS[c0[p]]: base.puestos[p][0] for p in range(pl.N_TITULARES)}
+    salida = []
+    for p in range(pl.N_TITULARES):
+        j = int(c0[p])
+        prob = ProblemaAlineacion(formacion, lesionados=[j])
+        v, c = mejor_conocido(prob, corridas)
+        pos = {pl.CORTOS[c[q]]: prob.puestos[q][0] for q in range(pl.N_TITULARES)}
+        entran = [f"{n} ({pos[n]})" for n in pos if n not in pos0]
+        se_mueven = [f"{n} ({pos0[n]} → {pos[n]})" for n in pos if n in pos0 and pos0[n] != pos[n]]
+        salida.append({"jugador": pl.NOMBRES[j], "corto": pl.CORTOS[j], "puesto": base.puestos[p][0],
+                       "puntaje_sin_el": v, "caida": v0 - v, "entran": entran, "se_mueven": se_mueven})
+    salida.sort(key=lambda d: -d["caida"])
+    return {"puntaje_completo": v0, "jugadores": salida}
+
+
+def barrido_quimica(formacion="4-4-2", valores=(0, 1, 3, 5, 10), corridas=4):
+    """Cómo cambia la mejor alineación al darle más o menos peso a la química."""
+    import graficas
+    referencia = None
+    salida = {}
+    for lam in valores:
+        p = ProblemaAlineacion(formacion, lam)
+        v, c = mejor_conocido(p, corridas)
+        d = p.detalle(c)
+        titulares = [f["corto"] for f in d["titulares"]]
+        if referencia is None:
+            referencia = set(titulares)
+        fuera = [f"{f['corto']} ({f['puesto']})" for f in d["titulares"]
+                 if graficas.fuera_de_posicion(pl.NOMBRES.index(f["jugador"]), f["rol"])]
+        salida[str(lam)] = {
+            "puntaje": v, "rendimiento": d["rendimiento"], "quimica": d["quimica"],
+            "pares_con_quimica": sum(1 for *_, q in d["pares_quimica"] if q > 0),
+            "alineacion": [(f["puesto"], f["corto"]) for f in d["titulares"]],
+            "fuera_de_linea": fuera,
+            "cambian_frente_a_lambda0": sorted(set(titulares) - referencia),
+        }
+    return salida

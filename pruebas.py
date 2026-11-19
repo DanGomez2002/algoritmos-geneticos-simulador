@@ -135,6 +135,19 @@ def test_inversion_siempre_cambia():
         assert not np.array_equal(MUTACIONES["Inversión"](c, rng), c)
 
 
+def test_portero_lesionado_entra_el_suplente():
+    p = ProblemaAlineacion(lesionados=[pl.CORTOS.index("Ríos")])
+    r = AlgoritmoGenetico(p, Configuracion(tam_poblacion=100, generaciones=150), False).ejecutar()
+    assert r["mejor"][0] == pl.CORTOS.index("Cuéllar")
+
+
+def test_extremo_de_volante_no_esta_fuera_de_posicion():
+    import graficas
+    monroy = pl.CORTOS.index("Monroy")
+    assert not graficas.fuera_de_posicion(monroy, "MED") and not graficas.fuera_de_posicion(monroy, "EXT")
+    assert graficas.fuera_de_posicion(monroy, "DFC")
+
+
 def test_hungaro_sin_quimica_lo_alcanza_el_ag():
     p = ProblemaAlineacion(lambda_quimica=0)
     h = optimo_sin_quimica(p)

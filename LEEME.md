@@ -15,8 +15,8 @@ Un entrenador tiene una plantilla de 18 jugadores y debe decidir quién juega en
 1. Tener Python 3.10 o superior.
 2. En una terminal abierta en esta carpeta: `pip install -r requirements.txt`
 3. Abrir el simulador: `python main.py`
-4. Comprobar que todo funciona: `python pruebas.py` (diecinueve comprobaciones).
-5. Regenerar las figuras y los números del informe: `python generar_resultados.py` (unos cuatro minutos; quedan en `resultados/`).
+4. Comprobar que todo funciona: `python pruebas.py` (veintiuna comprobaciones).
+5. Regenerar las figuras y los números del informe: `python generar_resultados.py` (unos seis minutos; quedan en `resultados/`).
 
 ## Cómo está planteado
 
@@ -42,7 +42,7 @@ Un entrenador tiene una plantilla de 18 jugadores y debe decidir quién juega en
 | `algoritmo.py` | El ciclo del algoritmo genético, el elitismo y las condiciones de parada |
 | `graficas.py` | Cancha, evolución del puntaje, genes de la población, matriz de rendimiento y tabla de la plantilla |
 | `interfaz.py` | La ventana del simulador |
-| `experimentos.py` | Corridas repetidas con 30 semillas |
+| `experimentos.py` | Experimentos con el algoritmo (población, operadores, elitismo, mutación, selección; 30 semillas) y con el fenómeno (química, formaciones, importancia de cada titular al lesionarlo) |
 | `generar_resultados.py` | Figuras y `resultados/resultados.json` |
 | `abrir_codigo.py` | Clic derecho que abre el código en VS Code |
 | `pruebas.py` | Comprobaciones automáticas |
