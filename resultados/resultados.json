@@ -1,0 +1,729 @@
+{
+ "mejor_conocido_442": 851.2545,
+ "evolucion_semilla7": {
+  "gen_mejor": 49,
+  "puntaje": 851.2545,
+  "puntajes_gen": {
+   "0": 708.8565,
+   "10": 809.115,
+   "40": 843.8325000000002,
+   "49": 851.2545
+  }
+ },
+ "poblacion": {
+  "10": {
+   "puntaje_medio": 840.4518733333334,
+   "puntaje_desv": 8.339158938323598,
+   "puntaje_peor": 821.7225000000001,
+   "puntaje_mejor": 849.2520000000002,
+   "exito_pct": 0.0,
+   "gen_llegada_media": null,
+   "gen_llegada_max": null,
+   "evaluaciones_llegada": null,
+   "alineaciones_distintas": 30,
+   "diversidad_final": 2.666666666666667
+  },
+  "20": {
+   "puntaje_medio": 847.5748999999998,
+   "puntaje_desv": 4.739034454049323,
+   "puntaje_peor": 834.3300000000002,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 40.0,
+   "gen_llegada_media": 169.08333333333334,
+   "gen_llegada_max": 252,
+   "evaluaciones_llegada": 3381.666666666667,
+   "alineaciones_distintas": 23,
+   "diversidad_final": 4.13888888888889
+  },
+  "50": {
+   "puntaje_medio": 850.0882166666667,
+   "puntaje_desv": 1.7194194644479184,
+   "puntaje_peor": 847.0049999999999,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 66.66666666666666,
+   "gen_llegada_media": 125.7,
+   "gen_llegada_max": 237,
+   "evaluaciones_llegada": 6285.0,
+   "alineaciones_distintas": 15,
+   "diversidad_final": 5.318518518518517
+  },
+  "100": {
+   "puntaje_medio": 850.9711999999998,
+   "puntaje_desv": 1.060011537673089,
+   "puntaje_peor": 847.0049999999999,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 93.33333333333333,
+   "gen_llegada_media": 73.67857142857143,
+   "gen_llegada_max": 153,
+   "evaluaciones_llegada": 7367.857142857143,
+   "alineaciones_distintas": 10,
+   "diversidad_final": 14.646296296296297
+  },
+  "200": {
+   "puntaje_medio": 851.0066999999998,
+   "puntaje_desv": 0.9373214549982558,
+   "puntaje_peor": 847.0049999999999,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 93.33333333333333,
+   "gen_llegada_media": 41.785714285714285,
+   "gen_llegada_max": 73,
+   "evaluaciones_llegada": 8357.142857142857,
+   "alineaciones_distintas": 10,
+   "diversidad_final": 22.4712962962963
+  }
+ },
+ "operadores": {
+  "PMX + Intercambio": {
+   "puntaje_medio": 850.0882166666667,
+   "puntaje_desv": 1.7194194644479184,
+   "puntaje_peor": 847.0049999999999,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 66.66666666666666,
+   "gen_llegada_media": 125.7,
+   "gen_llegada_max": 237,
+   "evaluaciones_llegada": 6285.0,
+   "alineaciones_distintas": 15,
+   "diversidad_final": 5.318518518518517
+  },
+  "PMX + Inserción": {
+   "puntaje_medio": 845.0867913333334,
+   "puntaje_desv": 5.503397719595136,
+   "puntaje_peor": 831.19724,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 20.0,
+   "gen_llegada_media": 162.66666666666666,
+   "gen_llegada_max": 250,
+   "evaluaciones_llegada": 8133.333333333333,
+   "alineaciones_distintas": 25,
+   "diversidad_final": 16.4
+  },
+  "PMX + Inversión": {
+   "puntaje_medio": 846.6436833333332,
+   "puntaje_desv": 4.731451814688824,
+   "puntaje_peor": 836.642,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 30.0,
+   "gen_llegada_media": 163.44444444444446,
+   "gen_llegada_max": 293,
+   "evaluaciones_llegada": 8172.222222222223,
+   "alineaciones_distintas": 24,
+   "diversidad_final": 12.614814814814816
+  },
+  "OX (orden) + Intercambio": {
+   "puntaje_medio": 849.7067833333332,
+   "puntaje_desv": 2.5447225837123364,
+   "puntaje_peor": 840.0520000000001,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 63.33333333333333,
+   "gen_llegada_media": 195.68421052631578,
+   "gen_llegada_max": 285,
+   "evaluaciones_llegada": 9784.210526315788,
+   "alineaciones_distintas": 16,
+   "diversidad_final": 17.992592592592594
+  },
+  "OX (orden) + Inserción": {
+   "puntaje_medio": 836.0378813333333,
+   "puntaje_desv": 9.715663542608509,
+   "puntaje_peor": 809.19724,
+   "puntaje_mejor": 849.2520000000002,
+   "exito_pct": 0.0,
+   "gen_llegada_media": null,
+   "gen_llegada_max": null,
+   "evaluaciones_llegada": null,
+   "alineaciones_distintas": 30,
+   "diversidad_final": 17.54814814814815
+  },
+  "OX (orden) + Inversión": {
+   "puntaje_medio": 834.9811880000001,
+   "puntaje_desv": 8.222042920583025,
+   "puntaje_peor": 819.0382,
+   "puntaje_mejor": 849.2520000000002,
+   "exito_pct": 0.0,
+   "gen_llegada_media": null,
+   "gen_llegada_max": null,
+   "evaluaciones_llegada": null,
+   "alineaciones_distintas": 29,
+   "diversidad_final": 18.133333333333333
+  },
+  "Ciclos (CX) + Intercambio": {
+   "puntaje_medio": 850.4716666666666,
+   "puntaje_desv": 1.6748988941293257,
+   "puntaje_peor": 844.8225,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 80.0,
+   "gen_llegada_media": 148.29166666666666,
+   "gen_llegada_max": 260,
+   "evaluaciones_llegada": 7414.583333333333,
+   "alineaciones_distintas": 10,
+   "diversidad_final": 4.951851851851853
+  },
+  "Ciclos (CX) + Inserción": {
+   "puntaje_medio": 832.0679066666668,
+   "puntaje_desv": 7.737865817477618,
+   "puntaje_peor": 817.45,
+   "puntaje_mejor": 843.8195000000001,
+   "exito_pct": 0.0,
+   "gen_llegada_media": null,
+   "gen_llegada_max": null,
+   "evaluaciones_llegada": null,
+   "alineaciones_distintas": 30,
+   "diversidad_final": 11.044444444444444
+  },
+  "Ciclos (CX) + Inversión": {
+   "puntaje_medio": 839.8936166666666,
+   "puntaje_desv": 6.338081677031481,
+   "puntaje_peor": 828.6724999999999,
+   "puntaje_mejor": 851.2545,
+   "exito_pct": 10.0,
+   "gen_llegada_media": 188.33333333333334,
+   "gen_llegada_max": 274,
+   "evaluaciones_llegada": 9416.666666666668,
+   "alineaciones_distintas": 30,
+   "diversidad_final": 10.651851851851852
+  }
+ },
+ "parametros": {
+  "elitismo_pct": {
+   "0": {
+    "puntaje_medio": 848.3010166666666,
+    "puntaje_desv": 3.6357131911160816,
+    "puntaje_peor": 839.7829999999999,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 43.333333333333336,
+    "gen_llegada_media": 195.3846153846154,
+    "gen_llegada_max": 291,
+    "evaluaciones_llegada": 9769.23076923077,
+    "alineaciones_distintas": 22,
+    "diversidad_final": 28.822222222222226
+   },
+   "2": {
+    "puntaje_medio": 851.1128499999999,
+    "puntaje_desv": 0.7628085949306248,
+    "puntaje_peor": 847.0049999999999,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 96.66666666666667,
+    "gen_llegada_media": 140.06896551724137,
+    "gen_llegada_max": 298,
+    "evaluaciones_llegada": 7003.448275862068,
+    "alineaciones_distintas": 9,
+    "diversidad_final": 9.562962962962963
+   },
+   "10": {
+    "puntaje_medio": 850.0882166666667,
+    "puntaje_desv": 1.7194194644479184,
+    "puntaje_peor": 847.0049999999999,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 66.66666666666666,
+    "gen_llegada_media": 125.7,
+    "gen_llegada_max": 237,
+    "evaluaciones_llegada": 6285.0,
+    "alineaciones_distintas": 15,
+    "diversidad_final": 5.318518518518517
+   },
+   "20": {
+    "puntaje_medio": 850.7609666666666,
+    "puntaje_desv": 1.1520605809688376,
+    "puntaje_peor": 847.0049999999999,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 83.33333333333334,
+    "gen_llegada_media": 118.0,
+    "gen_llegada_max": 277,
+    "evaluaciones_llegada": 5900.0,
+    "alineaciones_distintas": 10,
+    "diversidad_final": 6.033333333333333
+   },
+   "40": {
+    "puntaje_medio": 849.3159333333332,
+    "puntaje_desv": 3.7205199921814796,
+    "puntaje_peor": 835.1270000000002,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 70.0,
+    "gen_llegada_media": 169.42857142857142,
+    "gen_llegada_max": 292,
+    "evaluaciones_llegada": 8471.42857142857,
+    "alineaciones_distintas": 16,
+    "diversidad_final": 5.622222222222223
+   }
+  },
+  "prob_mutacion": {
+   "0.0": {
+    "puntaje_medio": 828.9768233333333,
+    "puntaje_desv": 9.911570483452959,
+    "puntaje_peor": 805.4386999999999,
+    "puntaje_mejor": 849.2520000000002,
+    "exito_pct": 0.0,
+    "gen_llegada_media": null,
+    "gen_llegada_max": null,
+    "evaluaciones_llegada": null,
+    "alineaciones_distintas": 30,
+    "diversidad_final": 7.2296296296296285
+   },
+   "0.05": {
+    "puntaje_medio": 849.3255666666666,
+    "puntaje_desv": 2.7755060161266787,
+    "puntaje_peor": 840.0520000000001,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 53.333333333333336,
+    "gen_llegada_media": 149.125,
+    "gen_llegada_max": 289,
+    "evaluaciones_llegada": 7456.25,
+    "alineaciones_distintas": 20,
+    "diversidad_final": 2.848148148148148
+   },
+   "0.1": {
+    "puntaje_medio": 850.0882166666667,
+    "puntaje_desv": 1.7194194644479184,
+    "puntaje_peor": 847.0049999999999,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 66.66666666666666,
+    "gen_llegada_media": 125.7,
+    "gen_llegada_max": 237,
+    "evaluaciones_llegada": 6285.0,
+    "alineaciones_distintas": 15,
+    "diversidad_final": 5.318518518518517
+   },
+   "0.2": {
+    "puntaje_medio": 850.5271333333332,
+    "puntaje_desv": 2.220844201099104,
+    "puntaje_peor": 840.0520000000001,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 86.66666666666667,
+    "gen_llegada_media": 103.15384615384616,
+    "gen_llegada_max": 263,
+    "evaluaciones_llegada": 5157.692307692308,
+    "alineaciones_distintas": 11,
+    "diversidad_final": 11.985185185185184
+   },
+   "0.4": {
+    "puntaje_medio": 850.8650499999999,
+    "puntaje_desv": 1.179087241259135,
+    "puntaje_peor": 847.0049999999999,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 90.0,
+    "gen_llegada_media": 80.03703703703704,
+    "gen_llegada_max": 141,
+    "evaluaciones_llegada": 4001.8518518518517,
+    "alineaciones_distintas": 9,
+    "diversidad_final": 21.22962962962963
+   }
+  },
+  "seleccion": {
+   "Ruleta": {
+    "puntaje_medio": 850.0882166666667,
+    "puntaje_desv": 1.7194194644479184,
+    "puntaje_peor": 847.0049999999999,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 66.66666666666666,
+    "gen_llegada_media": 125.7,
+    "gen_llegada_max": 237,
+    "evaluaciones_llegada": 6285.0,
+    "alineaciones_distintas": 15,
+    "diversidad_final": 5.318518518518517
+   },
+   "Torneo": {
+    "puntaje_medio": 849.4273333333333,
+    "puntaje_desv": 2.716109544100836,
+    "puntaje_peor": 840.0520000000001,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 63.33333333333333,
+    "gen_llegada_media": 138.26315789473685,
+    "gen_llegada_max": 270,
+    "evaluaciones_llegada": 6913.1578947368425,
+    "alineaciones_distintas": 14,
+    "diversidad_final": 3.0185185185185186
+   },
+   "Ranking": {
+    "puntaje_medio": 851.0066999999998,
+    "puntaje_desv": 0.9373214549982558,
+    "puntaje_peor": 847.0049999999999,
+    "puntaje_mejor": 851.2545,
+    "exito_pct": 93.33333333333333,
+    "gen_llegada_media": 119.53571428571429,
+    "gen_llegada_max": 256,
+    "evaluaciones_llegada": 5976.785714285715,
+    "alineaciones_distintas": 8,
+    "diversidad_final": 6.592592592592593
+   }
+  }
+ },
+ "quimica_vs_hungaro": {
+  "0.0": {
+   "hungaro": 829.3475000000001,
+   "hungaro_alineacion": [
+    "Ríos",
+    "Vargas",
+    "Perdomo",
+    "Ospina",
+    "Calderón",
+    "Monroy",
+    "Restrepo",
+    "Cardona",
+    "Guzmán",
+    "Mosquera",
+    "Patiño"
+   ],
+   "ag_mejor": 829.3475000000001,
+   "ag_alineacion": [
+    "Ríos",
+    "Vargas",
+    "Ospina",
+    "Perdomo",
+    "Calderón",
+    "Monroy",
+    "Cardona",
+    "Restrepo",
+    "Guzmán",
+    "Mosquera",
+    "Patiño"
+   ],
+   "ag_medio": 828.7145666666668,
+   "exito_pct": 86.66666666666667
+  },
+  "3.0": {
+   "hungaro": 844.3475000000001,
+   "hungaro_alineacion": [
+    "Ríos",
+    "Vargas",
+    "Perdomo",
+    "Ospina",
+    "Calderón",
+    "Monroy",
+    "Restrepo",
+    "Cardona",
+    "Guzmán",
+    "Mosquera",
+    "Patiño"
+   ],
+   "ag_mejor": 851.2545,
+   "ag_alineacion": [
+    "Ríos",
+    "Vargas",
+    "Perdomo",
+    "Silva",
+    "Murcia",
+    "Monroy",
+    "Restrepo",
+    "Ospina",
+    "Guzmán",
+    "Mosquera",
+    "Patiño"
+   ],
+   "ag_medio": 850.0882166666667,
+   "exito_pct": 66.66666666666666
+  }
+ },
+ "formaciones": {
+  "4-4-2": {
+   "puntaje": 851.2545,
+   "rendimiento": 824.2545,
+   "quimica": 27.0,
+   "alineacion": [
+    [
+     "POR",
+     "Ríos",
+     78.2,
+     "POR"
+    ],
+    [
+     "LD",
+     "Vargas",
+     73.6,
+     "LD"
+    ],
+    [
+     "DFC",
+     "Perdomo",
+     76.5,
+     "DFC"
+    ],
+    [
+     "DFC",
+     "Silva",
+     73.4,
+     "DFC"
+    ],
+    [
+     "LI",
+     "Murcia",
+     70.4,
+     "LI"
+    ],
+    [
+     "MD",
+     "Monroy",
+     74.8,
+     "ED"
+    ],
+    [
+     "MC",
+     "Restrepo",
+     74.5,
+     "MC"
+    ],
+    [
+     "MC",
+     "Ospina",
+     71.4,
+     "MCD"
+    ],
+    [
+     "MI",
+     "Guzmán",
+     73.7,
+     "EI"
+    ],
+    [
+     "DC",
+     "Mosquera",
+     82.2,
+     "DC"
+    ],
+    [
+     "DC",
+     "Patiño",
+     75.5,
+     "DC"
+    ]
+   ],
+   "banco": [
+    "Diego Bermúdez",
+    "Brayan Castaño",
+    "Nicolás Zapata",
+    "Harold Calderón",
+    "Óscar Trujillo",
+    "Felipe Cardona",
+    "Samuel Cuéllar"
+   ],
+   "optimo_local": true
+  },
+  "4-3-3": {
+   "puntaje": 848.24,
+   "rendimiento": 830.24,
+   "quimica": 18.0,
+   "alineacion": [
+    [
+     "POR",
+     "Ríos",
+     78.2,
+     "POR"
+    ],
+    [
+     "LD",
+     "Vargas",
+     73.6,
+     "LD"
+    ],
+    [
+     "DFC",
+     "Perdomo",
+     76.5,
+     "DFC"
+    ],
+    [
+     "DFC",
+     "Silva",
+     73.4,
+     "DFC"
+    ],
+    [
+     "LI",
+     "Calderón",
+     71.7,
+     "MC"
+    ],
+    [
+     "MCD",
+     "Ospina",
+     75.7,
+     "MCD"
+    ],
+    [
+     "MC",
+     "Cardona",
+     72.4,
+     "MC"
+    ],
+    [
+     "MC",
+     "Restrepo",
+     74.5,
+     "MC"
+    ],
+    [
+     "ED",
+     "Monroy",
+     78.8,
+     "ED"
+    ],
+    [
+     "DC",
+     "Mosquera",
+     82.2,
+     "DC"
+    ],
+    [
+     "EI",
+     "Zapata",
+     73.3,
+     "MCO"
+    ]
+   ],
+   "banco": [
+    "Samuel Cuéllar",
+    "Julián Patiño",
+    "Diego Bermúdez",
+    "Brayan Castaño",
+    "Luis Ángel Murcia",
+    "Alexis Guzmán",
+    "Óscar Trujillo"
+   ],
+   "optimo_local": true
+  },
+  "3-5-2": {
+   "puntaje": 845.5825,
+   "rendimiento": 824.5825,
+   "quimica": 21.0,
+   "alineacion": [
+    [
+     "POR",
+     "Ríos",
+     78.2,
+     "POR"
+    ],
+    [
+     "DFC",
+     "Castaño",
+     74.0,
+     "DFC"
+    ],
+    [
+     "DFC",
+     "Perdomo",
+     76.5,
+     "DFC"
+    ],
+    [
+     "DFC",
+     "Silva",
+     73.4,
+     "DFC"
+    ],
+    [
+     "CD",
+     "Vargas",
+     73.8,
+     "LD"
+    ],
+    [
+     "MCD",
+     "Ospina",
+     75.7,
+     "MCD"
+    ],
+    [
+     "MC",
+     "Monroy",
+     69.0,
+     "ED"
+    ],
+    [
+     "MC",
+     "Restrepo",
+     74.5,
+     "MC"
+    ],
+    [
+     "CI",
+     "Calderón",
+     71.8,
+     "MC"
+    ],
+    [
+     "DC",
+     "Mosquera",
+     82.2,
+     "DC"
+    ],
+    [
+     "DC",
+     "Patiño",
+     75.5,
+     "DC"
+    ]
+   ],
+   "banco": [
+    "Samuel Cuéllar",
+    "Alexis Guzmán",
+    "Nicolás Zapata",
+    "Diego Bermúdez",
+    "Óscar Trujillo",
+    "Luis Ángel Murcia",
+    "Felipe Cardona"
+   ],
+   "optimo_local": true
+  }
+ },
+ "lesion": {
+  "lesionado": "Santiago Restrepo",
+  "puntaje_antes": 851.2545,
+  "puntaje_despues": 846.152,
+  "alineacion_despues": [
+   [
+    "POR",
+    "Ríos"
+   ],
+   [
+    "LD",
+    "Vargas"
+   ],
+   [
+    "DFC",
+    "Silva"
+   ],
+   [
+    "DFC",
+    "Perdomo"
+   ],
+   [
+    "LI",
+    "Murcia"
+   ],
+   [
+    "MD",
+    "Monroy"
+   ],
+   [
+    "MC",
+    "Ospina"
+   ],
+   [
+    "MC",
+    "Cardona"
+   ],
+   [
+    "MI",
+    "Guzmán"
+   ],
+   [
+    "DC",
+    "Mosquera"
+   ],
+   [
+    "DC",
+    "Patiño"
+   ]
+  ],
+  "cambios": [
+   [
+    "Restrepo",
+    "MC",
+    "banco"
+   ],
+   [
+    "Cardona",
+    "banco",
+    "MC"
+   ]
+  ]
+ }
+}
