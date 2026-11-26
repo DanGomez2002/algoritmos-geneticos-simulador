@@ -15,7 +15,7 @@ Un entrenador tiene una plantilla de 18 jugadores y debe decidir quién juega en
 1. Tener Python 3.10 o superior.
 2. En una terminal abierta en esta carpeta: `pip install -r requirements.txt`
 3. Abrir el simulador: `python main.py`
-4. Comprobar que todo funciona: `python pruebas.py` (veintiuna comprobaciones).
+4. Comprobar que todo funciona: `python pruebas.py` (veintidós comprobaciones).
 5. Regenerar las figuras y los números del informe: `python generar_resultados.py` (unos seis minutos; quedan en `resultados/`).
 
 ## Cómo está planteado
@@ -24,13 +24,13 @@ Un entrenador tiene una plantilla de 18 jugadores y debe decidir quién juega en
 |---|---|
 | Cromosoma | Una alineación: permutación de los 18 jugadores. Los genes 1 a 11 son los puestos de la formación y los genes 12 a 18 son el banco |
 | Gen | El jugador que ocupa una posición del cromosoma; trae sus estadísticas (ritmo, tiro, pase, regate, defensa, físico, portería), su pie y su estado físico |
-| Población | Conjunto de alineaciones (50 por defecto) |
+| Población | Conjunto de alineaciones (100 por defecto en la ventana; los experimentos usan 50) |
 | Evaluación | Σ rendimiento de los titulares + λ · química entre vecinos − penalizaciones |
 | Selección | Ruleta (por defecto), torneo o ranking |
 | Cruce | PMX, OX (orden) o ciclos (CX), que nunca repiten jugadores |
 | Mutación | Intercambio (por defecto), inserción o inversión |
 | Elitismo | Porcentaje de las mejores alineaciones que pasa intacto (10 % por defecto) |
-| Parada | Máximo de generaciones, generaciones sin mejora o puntaje objetivo |
+| Parada | El primero que se cumpla: máximo de generaciones (200), generaciones sin mejora (50) o puntaje objetivo (el mejor conocido de la formación: 851,2 en el 4-4-2, 848,2 en el 4-3-3 y 845,5 en el 3-5-2; se apaga con otro λ o con lesionados) |
 
 ## Archivos
 
@@ -53,6 +53,8 @@ Un entrenador tiene una plantilla de 18 jugadores y debe decidir quién juega en
 * Selección, cruce, mutación, probabilidades, elitismo, tamaño del torneo y condiciones de parada se cambian **mientras corre**, sin perder la búsqueda.
 * Cambiar la formación, la población, el peso de la química, la semilla o los lesionados empieza de nuevo.
 * **Lesionados (#)** recibe los números de los jugadores separados por coma (por ejemplo `10, 3`).
+* Si la pantalla es más pequeña que la ventana (por ejemplo, un portátil de 1366 × 768), todo se reduce en la misma proporción para que quepa completo.
+* La tabla de genes muestra los 15 mejores cromosomas de la población, con el puesto en el ranking y el puntaje del primero y del último.
 * **Ver generación** permite volver a cualquier generación para ver la mejor alineación y los genes de la población en ese momento.
 * **Repetir evolución** reproduce toda la búsqueda desde la generación 0.
 * **Ver plantilla** muestra las estadísticas de los jugadores y los pesos de cada rol.

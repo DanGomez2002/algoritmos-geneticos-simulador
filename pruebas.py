@@ -219,6 +219,33 @@ def test_interfaz_controles():
     assert os.path.getsize(ruta) > 10000
 
 
+def test_criterios_de_parada_por_defecto():
+    from interfaz import OBJETIVO_CONOCIDO, Simulador
+    sim = Simulador()
+    cfg = sim.ag.cfg
+    assert cfg.tam_poblacion == 100 and cfg.generaciones == 200
+    assert cfg.sin_mejora == 50 and cfg.umbral == OBJETIVO_CONOCIDO["4-4-2"]
+    while not sim.ag.terminado():                 # con los valores por defecto para antes de 200
+        sim.ag.paso()
+    assert sim.ag.generacion < 200 and sim.ag.motivo_parada() != "llegó al máximo de generaciones"
+    sim._elegir_formacion("3-5-2")                # el objetivo sigue a la formación
+    assert sim.ag.cfg.umbral == OBJETIVO_CONOCIDO["3-5-2"]
+    sim.s_lam.set_val(5.0)                        # con otro λ el óptimo se desconoce: objetivo apagado
+    assert sim.ag.cfg.umbral == 0
+    sim.s_lam.set_val(3.0)
+    sim.t_les.set_val("1")                        # con lesionados también se apaga
+    assert sim.ag.cfg.umbral == 0
+    sim.t_les.set_val("")
+    assert sim.ag.cfg.umbral == OBJETIVO_CONOCIDO["3-5-2"]
+    # Ningún objetivo supera el mejor puntaje conocido de su formación (si no, nunca pararía por él).
+    import json
+    ruta = os.path.join(os.path.dirname(os.path.abspath(__file__)), "resultados", "resultados.json")
+    with open(ruta, encoding="utf-8") as fh:
+        formaciones = json.load(fh)["formaciones"]
+    for f, objetivo in OBJETIVO_CONOCIDO.items():
+        assert objetivo <= formaciones[f]["puntaje"], f
+
+
 def test_clic_derecho():
     from interfaz import Simulador
     pedidos = []

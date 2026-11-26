@@ -11,7 +11,9 @@ Entrega final de Computacional I (profesor Jesús Emilio Pinto Lopera), autor Ca
 * Sustentaciones desde el lunes 30 de noviembre.
 
 ## Estado (19 nov 2026)
-* Simulador terminado; `pruebas.py` tiene 21 comprobaciones y todas pasan.
+* Simulador terminado; `pruebas.py` tiene 22 comprobaciones y todas pasan.
+* 25 nov: la ventana trae activos los tres criterios de parada: máximo 200 generaciones, 50 sin mejora y puntaje objetivo = mejor conocido de la formación (`OBJETIVO_CONOCIDO` en `interfaz.py`; se apaga con λ ≠ 3 o con lesionados). La población por defecto de la ventana es 100. Así suele parar entre la generación 25 y 155 en vez de llegar a 200. `Configuracion` y `experimentos.py` no cambiaron, así que ninguna cifra de `resultados/` cambia.
+* 25 nov: la tabla de genes muestra los 15 mejores («Genes de la población, generación N (15 mejores de M)», etiquetas «1.º» y «15.º», leyenda debajo) y `ajustar_a_pantalla` en `interfaz.py` reduce el dpi de la figura cuando la pantalla es pequeña (probado en 1366 × 768 y 1920 × 1080 con TkAgg).
 * Resultados en `resultados/` (`generar_resultados.py`, unos seis minutos). Incluyen experimentos con el algoritmo y con el fenómeno: química contra método húngaro, barrido del peso de la química (λ = 0, 1, 3, 5, 10), formaciones e importancia de cada titular (se lesiona uno por uno).
 * La tabla de genes dibuja cada número como una figura vectorial reutilizada (18 objetos en vez de 540 textos); no volver a `ax.text` por celda, porque la ventana se vuelve lenta.
 * La mutación por inversión exige un tramo de al menos 2 genes; con eso PMX + inversión da 30 % de éxito y ciclos + inversión 10 %.

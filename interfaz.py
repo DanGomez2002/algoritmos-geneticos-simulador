@@ -27,6 +27,15 @@ from algoritmo import AlgoritmoGenetico, Configuracion, n_elite
 from evaluacion import ProblemaAlineacion, optimo_sin_quimica
 from operadores import CRUCES, MUTACIONES, SELECCIONES
 
+# Valores por defecto de la ventana (las corridas de experimentos.py usan los suyos).
+POBLACION_VENTANA = 100
+SIN_MEJORA_VENTANA = 50
+LAMBDA_VENTANA = 3.0
+# Mejor puntaje conocido de cada formación con λ = 3 y sin lesionados
+# (resultados/resultados.json), redondeado hacia abajo: es el puntaje objetivo
+# por defecto. Con otro λ o con lesionados el objetivo se desconoce y se apaga (0).
+OBJETIVO_CONOCIDO = {"4-4-2": 851.2, "4-3-3": 848.2, "3-5-2": 845.5}
+
 
 class Simulador:
 
@@ -104,23 +113,24 @@ class Simulador:
                                               list(MUTACIONES), c.mutacion, self._cambio_en_vivo)
 
         self.fig.text(0.135, 0.905, "Parámetros", fontsize=9, weight="bold")
-        self.ax_pob, self.s_pob = self._slider(0.875, "Población", 4, 300, c.tam_poblacion, 1)
+        self.ax_pob, self.s_pob = self._slider(0.875, "Población", 4, 300, POBLACION_VENTANA, 1)
         self.ax_gen, self.s_gen = self._slider(0.845, "Generaciones máx.", 10, 1000, c.generaciones, 10)
         self.ax_pc, self.s_pc = self._slider(0.815, "Prob. cruce", 0, 1, c.prob_cruce, 0.05, "%.2f")
         self.ax_pm, self.s_pm = self._slider(0.785, "Prob. mutación", 0, 1, c.prob_mutacion, 0.01, "%.2f")
         self.ax_eli, self.s_eli = self._slider(0.755, "Elitismo (%)", 0, 50, c.elitismo_pct, 1)
         self.ax_k, self.s_k = self._slider(0.725, "Tamaño torneo k", 2, 10, c.k_torneo, 1)
-        self.ax_lam, self.s_lam = self._slider(0.695, "Peso química λ", 0, 10, 3.0, 0.5, "%.1f")
+        self.ax_lam, self.s_lam = self._slider(0.695, "Peso química λ", 0, 10, LAMBDA_VENTANA, 0.5, "%.1f")
         self.fig.text(0.135, 0.66, "Parada y escenario", fontsize=9, weight="bold")
-        self.ax_sm, self.s_sm = self._slider(0.632, "Parar sin mejora", 0, 300, 0, 10)
-        self.ax_umb, self.t_umb = self._caja(0.595, "Puntaje objetivo", "0", self._cambio_en_vivo)
+        self.ax_sm, self.s_sm = self._slider(0.632, "Parar sin mejora", 0, 300, SIN_MEJORA_VENTANA, 10)
+        self.ax_umb, self.t_umb = self._caja(0.595, "Puntaje objetivo",
+                                             f"{OBJETIVO_CONOCIDO[self.formacion]:g}", self._cambio_en_vivo)
         self.ax_sem, self.t_sem = self._caja(0.560, "Semilla", "7", lambda _: self.reiniciar())
-        self.ax_les, self.t_les = self._caja(0.525, "Lesionados (#)", "", lambda _: self.reiniciar())
+        self.ax_les, self.t_les = self._caja(0.525, "Lesionados (#)", "", self._cambio_escenario)
 
         for s in (self.s_pc, self.s_pm, self.s_eli, self.s_k, self.s_sm, self.s_gen):
             s.on_changed(self._cambio_en_vivo)
-        for s in (self.s_pob, self.s_lam):
-            s.on_changed(lambda _: self.reiniciar())
+        self.s_pob.on_changed(lambda _: self.reiniciar())
+        self.s_lam.on_changed(self._cambio_escenario)
 
         self.ax_run, self.b_run = self._boton([0.135, 0.468, 0.09, 0.036], "▶ Ejecutar", self._ejecutar_pausar)
         self.ax_paso, self.b_paso = self._boton([0.23, 0.468, 0.09, 0.036], "Un paso", self._un_paso)
@@ -142,7 +152,7 @@ class Simulador:
         self.s_ver.valtext.set_fontsize(8)
         self.s_ver.on_changed(self._ver_generacion)
         self.ax_con = self.fig.add_axes([0.665, 0.715, 0.32, 0.215])
-        self.ax_gen_pob = self.fig.add_axes([0.665, 0.395, 0.32, 0.25])
+        self.ax_gen_pob = self.fig.add_axes([0.665, 0.415, 0.32, 0.21])
         self.ax_mat = self.fig.add_axes([0.71, 0.04, 0.275, 0.30])
         self._tabla_destinos()
 
@@ -182,7 +192,25 @@ class Simulador:
     # -------------------------------------------------------------- callbacks
     def _elegir_formacion(self, etiqueta):
         self.formacion = etiqueta
+        self._ajustar_objetivo()
         self.reiniciar()
+
+    def _cambio_escenario(self, _=None):
+        """Cambió λ o los lesionados: el problema es otro y se empieza de nuevo."""
+        self._ajustar_objetivo()
+        self.reiniciar()
+
+    def _ajustar_objetivo(self):
+        """Pone como puntaje objetivo el mejor conocido de la formación.
+
+        Solo se conoce para λ = 3 y sin lesionados; en otro caso se apaga (0),
+        porque un objetivo equivocado haría parar antes de tiempo o nunca.
+        """
+        conocido = abs(float(self.s_lam.val) - LAMBDA_VENTANA) < 1e-9 and not self._lesionados()
+        valor = f"{OBJETIVO_CONOCIDO[self.formacion]:g}" if conocido else "0"
+        self.t_umb.eventson = False
+        self.t_umb.set_val(valor)
+        self.t_umb.eventson = True
 
     def _cambio_en_vivo(self, _=None):
         """Operadores, probabilidades, elitismo y parada cambian SIN reiniciar."""
@@ -281,6 +309,9 @@ class Simulador:
         lineas = [f"Generación {ag.generacion} / {cfg.generaciones}"
                   + (f"  ({ag.motivo_parada()})" if ag.terminado() else ""),
                   f"Población {cfg.tam_poblacion} · élite {n_elite(cfg)} ({cfg.elitismo_pct:.0f} %)",
+                  "Parada: máx. {} gen. · sin mejora {} · objetivo {}".format(
+                      cfg.generaciones, cfg.sin_mejora or "no",
+                      f"{cfg.umbral:g}" if cfg.umbral > 0 else "no"),
                   f"Diversidad {ag.historial.diversidad[-1]:.1f} % de genes distintos",
                   "",
                   f"MEJOR PUNTAJE  {d['total']:8.1f}  (gen. {ag.gen_mejor})",
@@ -396,7 +427,38 @@ class Simulador:
         self.fig.canvas.draw_idle()
 
 
+def ajustar_a_pantalla(fig, ancho_pulg=16, alto_pulg=9):
+    """Encoge la ventana completa si la pantalla es más pequeña que la figura.
+
+    En vez de cortar la ventana o amontonar los controles, se baja la
+    resolución (dpi) de la figura en la misma proporción: todo, letras
+    incluidas, se ve igual que en una pantalla grande pero más pequeño.
+    Devuelve la escala aplicada (1 = sin cambios).
+    """
+    try:
+        ventana = fig.canvas.manager.window
+        ancho = ventana.winfo_screenwidth()
+        alto = ventana.winfo_screenheight()
+    except Exception:
+        return 1.0                                   # otro backend o sin pantalla: no se toca
+    dpi = fig.dpi
+    escala = min(1.0, (ancho - 40) / (ancho_pulg * dpi), (alto - 120) / (alto_pulg * dpi))
+    if escala < 1.0:
+        # _original_dpi es el dpi sin el factor de pantallas de alta densidad;
+        # Matplotlib lo vuelve a multiplicar si cambia ese factor.
+        if hasattr(fig, "_original_dpi"):
+            fig._original_dpi *= escala
+        fig.set_dpi(dpi * escala)
+        fig.set_size_inches(ancho_pulg, alto_pulg, forward=True)
+        try:
+            ventana.geometry("+0+0")                 # esquina superior izquierda
+        except Exception:
+            pass
+    return escala
+
+
 def lanzar():
     sim = Simulador()
+    ajustar_a_pantalla(sim.fig)
     plt.show()
     return sim

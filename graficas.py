@@ -13,6 +13,7 @@ from matplotlib.collections import PathCollection
 from matplotlib.font_manager import FontProperties
 from matplotlib.patches import Arc, Circle, Rectangle
 from matplotlib.textpath import TextPath
+from matplotlib.ticker import MaxNLocator
 from matplotlib.transforms import Affine2D
 
 import plantilla as pl
@@ -125,6 +126,7 @@ def dibujar_convergencia(ax, historial, referencia=None, gen_marcada=None, ancho
     ax.set_ylim(bajo - 0.04 * (alto - bajo), alto + 0.12 * (alto - bajo + 1))
     if ancho_x:
         ax.set_xlim(0, ancho_x)
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.set_xlabel("Generación", fontsize=8)
     ax.set_ylabel("Puntaje del equipo", fontsize=8)
     ax.set_title("Evolución del puntaje", fontsize=9.5)
@@ -160,33 +162,36 @@ def _numeros_en_celdas(ax, P, fontsize):
                                          facecolors="k", edgecolors="none"))
 
 
-def dibujar_genes(ax, problema, poblacion, puntajes, n_elite=0, max_filas=30, generacion=None):
+def dibujar_genes(ax, problema, poblacion, puntajes, n_elite=0, max_filas=15, generacion=None):
     """Cada fila es un cromosoma (del mejor al peor) y cada columna un gen.
 
     El color de la celda es el jugador que ocupa ese gen. Al principio la
     tabla es un mosaico de colores; con las generaciones las columnas se
     vuelven de un solo color: la población converge a una alineación.
+    Se muestran solo los `max_filas` mejores para que los números se lean
+    también en pantallas pequeñas.
     """
     ax.clear()
+    total = len(poblacion)
     P = np.asarray(poblacion)[:max_filas]
     filas, L = P.shape
     imagen = np.array([[COLORES_JUGADOR[j] for j in fila] for fila in P])
     ax.imshow(imagen, aspect="auto", interpolation="nearest")
-    if filas <= 30:
-        _numeros_en_celdas(ax, P, fontsize=5.2)
+    _numeros_en_celdas(ax, P, fontsize=6)
     ax.axvline(pl.N_TITULARES - 0.5, color="k", lw=1.5)
     if n_elite:
         ax.add_patch(Rectangle((-0.5, -0.5), L, min(n_elite, filas), fill=False, ec=ROJO, lw=1.8))
     siglas = [p[0] for p in problema.puestos] + ["B"] * (L - pl.N_TITULARES)
     ax.set_xticks(range(L))
-    ax.set_xticklabels(siglas, fontsize=5.8, rotation=90)
+    ax.set_xticklabels(siglas, fontsize=6)
     ax.set_yticks([0, filas - 1])
-    ax.set_yticklabels([f"{puntajes[0]:.0f}", f"{puntajes[filas - 1]:.0f}"], fontsize=6)
+    ax.set_yticklabels([f"1.º {puntajes[0]:.0f}", f"{filas}.º {puntajes[filas - 1]:.0f}"], fontsize=6.5)
     ax.tick_params(length=0)
+    ax.set_xlabel("recuadro rojo = élite  ·  B = banco", fontsize=7, labelpad=2)
     t = "Genes de la población"
     if generacion is not None:
-        t += f" (generación {generacion})"
-    ax.set_title(t + "  ·  rojo = élite, B = banco", fontsize=8.5)
+        t += f", generación {generacion}"
+    ax.set_title(f"{t} ({filas} mejores de {total})", fontsize=8.5)
 
 
 # ---------------------------------------------------------------------------
