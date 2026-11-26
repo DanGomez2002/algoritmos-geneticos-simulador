@@ -2,3 +2,5 @@ __pycache__/
 *.pyc
 *.zip
 captura_generacion_*.png
+.venv/
+*_generacion_*.png

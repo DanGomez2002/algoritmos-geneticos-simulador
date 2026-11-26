@@ -198,3 +198,43 @@ def barrido_quimica(formacion="4-4-2", valores=(0, 1, 3, 5, 10), corridas=4):
             "cambian_frente_a_lambda0": sorted(set(titulares) - referencia),
         }
     return salida
+
+
+def criterios_parada(semillas=SEMILLAS):
+    """Cuántas generaciones ahorra cada criterio de parada y cuánto cuesta en éxito.
+
+    Se comparan, con población 50 y con población 100, cuatro combinaciones:
+    solo el máximo de 200 generaciones, el máximo más 50 generaciones sin
+    mejora, el máximo más el puntaje objetivo (la mejor alineación conocida)
+    y los tres a la vez, que es la configuración por defecto de la ventana.
+    """
+    p = ProblemaAlineacion("4-4-2")
+    objetivo = mejor_conocido(p)[0]
+    umbral = np.floor(objetivo * 10) / 10                     # 851,2: el de la ventana
+    combinaciones = {
+        "Solo máximo (200)": dict(sin_mejora=0, umbral=0.0),
+        "Máximo + 50 sin mejora": dict(sin_mejora=50, umbral=0.0),
+        "Máximo + objetivo": dict(sin_mejora=0, umbral=umbral),
+        "Los tres": dict(sin_mejora=50, umbral=umbral),
+    }
+    salida = {}
+    for tam in (50, 100):
+        for nombre, cambios in combinaciones.items():
+            exitos, generaciones, motivos = [], [], {}
+            for s in semillas:
+                ag = AlgoritmoGenetico(p, Configuracion(tam_poblacion=tam, generaciones=200, semilla=s,
+                                                        **cambios), guardar_poblaciones=False)
+                r = ag.ejecutar()
+                exitos.append(r["mejor_puntaje"] >= objetivo - 1e-6)
+                generaciones.append(r["generaciones"])
+                motivo = ag.motivo_parada()
+                motivos[motivo] = motivos.get(motivo, 0) + 1
+            salida[f"{tam}|{nombre}"] = {
+                "poblacion": tam, "criterio": nombre,
+                "exito_pct": float(100 * np.mean(exitos)),
+                "generaciones_media": float(np.mean(generaciones)),
+                "generaciones_max": int(np.max(generaciones)),
+                "evaluaciones_media": float(np.mean(generaciones) * tam),
+                "motivos": motivos,
+            }
+    return salida

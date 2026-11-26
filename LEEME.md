@@ -15,8 +15,8 @@ Un entrenador tiene una plantilla de 18 jugadores y debe decidir quién juega en
 1. Tener Python 3.10 o superior.
 2. En una terminal abierta en esta carpeta: `pip install -r requirements.txt`
 3. Abrir el simulador: `python main.py`
-4. Comprobar que todo funciona: `python pruebas.py` (veintidós comprobaciones).
-5. Regenerar las figuras y los números del informe: `python generar_resultados.py` (unos seis minutos; quedan en `resultados/`).
+4. Comprobar que todo funciona: `python pruebas.py` (veintitrés comprobaciones).
+5. Regenerar las figuras y los números del informe: `python generar_resultados.py` (unos siete minutos; quedan en `resultados/`).
 
 ## Cómo está planteado
 
@@ -53,11 +53,14 @@ Un entrenador tiene una plantilla de 18 jugadores y debe decidir quién juega en
 * Selección, cruce, mutación, probabilidades, elitismo, tamaño del torneo y condiciones de parada se cambian **mientras corre**, sin perder la búsqueda.
 * Cambiar la formación, la población, el peso de la química, la semilla o los lesionados empieza de nuevo.
 * **Lesionados (#)** recibe los números de los jugadores separados por coma (por ejemplo `10, 3`).
-* Si la pantalla es más pequeña que la ventana (por ejemplo, un portátil de 1366 × 768), todo se reduce en la misma proporción para que quepa completo.
+* Si la pantalla es más pequeña que la ventana (por ejemplo, un portátil de 1366 × 768), la ventana se abre maximizada y sin la barra de herramientas de Matplotlib, y las letras se agrandan un 25 % para que se lean bien. Los textos de resultados ajustan su tamaño solos para caber completos.
 * La tabla de genes muestra los 15 mejores cromosomas de la población, con el puesto en el ranking y el puntaje del primero y del último.
 * **Ver generación** permite volver a cualquier generación para ver la mejor alineación y los genes de la población en ese momento.
 * **Repetir evolución** reproduce toda la búsqueda desde la generación 0.
-* **Ver plantilla** muestra las estadísticas de los jugadores y los pesos de cada rol.
+* **Plantilla** muestra las estadísticas de los jugadores y, debajo, los pesos de cada rol.
+* **Genes** abre una ventana con el mejor cromosoma de cada generación en que mejoró la alineación (una fila por mejora, con su generación y su puntaje); el deslizador elige hasta qué generación se muestran.
+* **Resumen** abre una ventana con la evolución del puntaje (mejor, promedio y rango de la población), la diversidad, la tabla de las mejoras con lo que cambió en los titulares y los datos de la corrida.
+* En **Genes** y **Resumen**, el botón **Guardar imagen** guarda la ventana principal y la que está abierta (`captura_generacion_N.png` y `genes_generacion_N.png` o `resumen_generacion_N.png`).
 * En la cancha, el anillo naranja punteado marca a un jugador que juega fuera de su línea natural. Las líneas verdes y rojas muestran la química entre vecinos.
 
 ## Clic derecho: ir al código

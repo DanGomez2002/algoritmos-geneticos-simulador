@@ -64,6 +64,7 @@ class Simulador:
         self.timer = self.fig.canvas.new_timer(interval=60)
         self.timer.add_callback(self._tic)
         self.fig.canvas.mpl_connect("button_press_event", self._clic_derecho)
+        self.fig.canvas.mpl_connect("resize_event", lambda _: self._ajustar_letras())
 
     # ------------------------------------------------------------------ armado
     def _radio(self, rect, titulo, opciones, activa, accion):
@@ -136,13 +137,20 @@ class Simulador:
         self.ax_paso, self.b_paso = self._boton([0.23, 0.468, 0.09, 0.036], "Un paso", self._un_paso)
         self.ax_rei, self.b_rei = self._boton([0.135, 0.426, 0.09, 0.036], "Reiniciar", self.reiniciar)
         self.ax_rep, self.b_rep = self._boton([0.23, 0.426, 0.09, 0.036], "Repetir evolución", self._repetir)
-        self.ax_pla, self.b_pla = self._boton([0.135, 0.384, 0.09, 0.036], "Ver plantilla", self._ver_plantilla)
-        self.ax_gua, self.b_gua = self._boton([0.23, 0.384, 0.09, 0.036], "Guardar imagen", self._guardar)
+        # Tres ventanas aparte en la misma fila: la plantilla, los genes de cada mejora y el resumen.
+        self.ax_pla, self.b_pla = self._boton([0.135, 0.384, 0.058, 0.036], "Plantilla", self._ver_plantilla)
+        self.ax_vgen, self.b_vgen = self._boton([0.1985, 0.384, 0.058, 0.036], "Genes", self._ver_genes)
+        self.ax_res, self.b_res = self._boton([0.262, 0.384, 0.058, 0.036], "Resumen", self._ver_resumen)
 
         self.ax_txt = self.fig.add_axes([0.135, 0.03, 0.2, 0.34])
         self.ax_txt.axis("off")
         self.texto = self.ax_txt.text(0, 1, "", va="top", ha="left", fontsize=7.4, family="monospace",
                                       transform=self.ax_txt.transAxes)
+        # Titulares de la mejor alineación, debajo de «Mutación» (columna izquierda).
+        self.ax_tit = self.fig.add_axes([0.01, 0.03, 0.115, 0.215])
+        self.ax_tit.axis("off")
+        self.titulares = self.ax_tit.text(0, 1, "", va="top", ha="left", fontsize=7.4, family="monospace",
+                                          transform=self.ax_tit.transAxes)
 
     def _crear_graficas(self):
         self.ax_can = self.fig.add_axes([0.345, 0.095, 0.27, 0.835])
@@ -306,36 +314,128 @@ class Simulador:
         ag, cfg = self.ag, self.ag.cfg
         d = self.problema.detalle(ag.mejor)
         ref = self.problema.evaluar(self.referencia["cromosoma"])[0]
-        lineas = [f"Generación {ag.generacion} / {cfg.generaciones}"
-                  + (f"  ({ag.motivo_parada()})" if ag.terminado() else ""),
-                  f"Población {cfg.tam_poblacion} · élite {n_elite(cfg)} ({cfg.elitismo_pct:.0f} %)",
-                  "Parada: máx. {} gen. · sin mejora {} · objetivo {}".format(
-                      cfg.generaciones, cfg.sin_mejora or "no",
-                      f"{cfg.umbral:g}" if cfg.umbral > 0 else "no"),
+        # Compacto a propósito (12 líneas, hasta unos 50 caracteres): así cabe
+        # con letra legible también en un portátil de 1366 × 768.
+        parada = [f"{cfg.generaciones} gen."]
+        if cfg.sin_mejora:
+            parada.append(f"{cfg.sin_mejora} sin mejora")
+        if cfg.umbral > 0:
+            parada.append(f"objetivo {cfg.umbral:g}")
+        lineas = [f"Generación {ag.generacion} / {cfg.generaciones}",
+                  f"Paró: {ag.motivo_parada()}" if ag.terminado() else "",
+                  f"{cfg.seleccion} · {cfg.cruce} · {cfg.mutacion}",
+                  f"Población {cfg.tam_poblacion} · élite {n_elite(cfg)} · "
+                  f"pc {cfg.prob_cruce:.2f} · pm {cfg.prob_mutacion:.2f}",
+                  "Parada: " + " · ".join(parada),
                   f"Diversidad {ag.historial.diversidad[-1]:.1f} % de genes distintos",
                   "",
                   f"MEJOR PUNTAJE  {d['total']:8.1f}  (gen. {ag.gen_mejor})",
                   f"  rendimiento  {d['rendimiento']:8.1f}",
                   f"  química      {d['quimica']:+8.1f}",
                   f"  penalización {-d['penalizacion']:+8.1f}",
-                  f"Húngaro + química {ref:7.1f}", ""]
-        for f in d["titulares"]:
+                  f"Húngaro + química {ref:7.1f}"]
+        return "\n".join(lineas)
+
+    def _texto_titulares(self):
+        """Los 11 titulares de la mejor alineación: puesto, jugador, rendimiento y línea natural."""
+        lineas = ["TITULARES", "(* = fuera de su línea)"]
+        for f in self.problema.detalle(self.ag.mejor)["titulares"]:
             marca = "*" if graficas.fuera_de_posicion(pl.NOMBRES.index(f["jugador"]), f["rol"]) else " "
-            lineas.append(f"{f['puesto']:4s}{marca}{f['corto']:10s}{f['rendimiento']:5.1f}  ({f['natural']})")
-        lineas.append("* fuera de su línea natural")
-        lineas.append("")
-        lineas.append(f"{cfg.seleccion} · {cfg.cruce} · {cfg.mutacion}")
-        lineas.append(f"pc = {cfg.prob_cruce:.2f}   pm = {cfg.prob_mutacion:.2f}")
+            lineas.append(f"{f['puesto']:4s}{marca}{f['corto']:9s}{f['rendimiento']:5.1f} {f['natural']}")
         return "\n".join(lineas)
 
     def _actualizar_texto(self):
         self.texto.set_text(self._texto())
+        self.titulares.set_text(self._texto_titulares())
+        self._ajustar_letras()
+
+    def _ajustar_letras(self):
+        self._ajustar_letra(self.texto, 0.345, 8.0)   # el panel llega hasta la cancha
+        self._ajustar_letra(self.titulares, 0.135)    # los titulares, hasta el panel
+
+    def _ajustar_letra(self, texto, borde_derecho, maxima=7.4):
+        """Pone en `texto` la letra más grande (hasta `maxima`) que quepa.
+
+        El texto va desde su borde superior hasta el pie de la ventana y, a lo
+        ancho, hasta `borde_derecho` (fracción de la figura). Con la lupa de
+        ajustar_a_pantalla las letras crecen y el texto podría salirse por
+        abajo o invadir lo de al lado; aquí se reduce lo justo.
+        """
+        # El ancho de la letra monoespaciada se redondea a píxeles enteros, así
+        # que el tamaño del texto crece a saltos: se mide de verdad y se baja
+        # un 4 % cada vez hasta que quepa (casi siempre cabe a la primera).
+        letra = maxima
+        while letra > 4:
+            texto.set_fontsize(letra)
+            try:
+                caja = texto.get_window_extent(self.fig.canvas.get_renderer())
+            except Exception:
+                return                               # backend sin renderer: se deja como está
+            ancho_px, alto_px = self.fig.bbox.width, self.fig.bbox.height
+            if caja.y0 >= 0.004 * alto_px and caja.x1 <= (borde_derecho - 0.004) * ancho_px:
+                return
+            letra *= 0.96
 
     def _ver_plantilla(self):
         fig = graficas.fig_plantilla()
         fig.canvas.mpl_connect("button_press_event", lambda e: self._abrir_si_derecho(
             e, "plantilla.py", "JUGADORES"))
+        ajustar_a_pantalla(fig, 11, 9.4)
         fig.show()
+
+    def _ventana_con_guardar(self, fig, nombre_base):
+        """Pone en una ventana aparte el botón «Guardar imagen» (guarda la principal y esa ventana)."""
+        ax_b = fig.add_axes([0.87, 0.012, 0.115, 0.045])
+        boton = Button(ax_b, "Guardar imagen", color="#edf2f7", hovercolor="#e2e8f0")
+        boton.label.set_fontsize(8.5)
+        aviso = fig.text(0.40, 0.025, "", fontsize=8, color=graficas.AZUL)
+
+        def guardar(_):
+            principal = self._guardar()
+            nombre = f"{nombre_base}_generacion_{self.ag.generacion}.png"
+            fig.savefig(abrir_codigo.ruta(nombre), dpi=110)
+            aviso.set_text(f"Guardadas: {principal} y {nombre}")
+            fig.canvas.draw_idle()
+        boton.on_clicked(guardar)
+        return boton
+
+    def _ver_genes(self):
+        """Ventana aparte con el mejor cromosoma de cada generación en que mejoró la alineación.
+
+        El deslizador elige hasta qué generación se muestran las mejoras.
+        """
+        h, ag = self.ag.historial, self.ag
+        fig = plt.figure(figsize=(10, 8.6))
+        ax_mej = fig.add_axes([0.16, 0.14, 0.81, 0.79])
+        ax_sl = fig.add_axes([0.16, 0.035, 0.45, 0.03])
+        actual = self.gen_vista if self.gen_vista is not None else ag.generacion
+        deslizador = Slider(ax_sl, "Hasta la generación", 0, max(1, ag.generacion), valinit=actual,
+                            valstep=1, valfmt="%d")
+
+        def dibujar(g):
+            graficas.dibujar_mejores(ax_mej, self.problema, h, int(min(g, ag.generacion)))
+            fig.canvas.draw_idle()
+
+        deslizador.on_changed(dibujar)
+        boton = self._ventana_con_guardar(fig, "genes")
+        fig.canvas.mpl_connect("button_press_event", lambda e: self._abrir_si_derecho(
+            e, "graficas.py", "dibujar_mejores"))
+        self._ventana_genes = (fig, deslizador, boton)   # sin referencia los controles dejan de responder
+        ajustar_a_pantalla(fig, 10, 8.6)
+        dibujar(actual)
+        fig.show()
+        return fig
+
+    def _ver_resumen(self):
+        """Ventana aparte con la evolución, la diversidad, las mejoras y los datos de la corrida."""
+        fig = graficas.fig_resumen(self.ag, self.problema.evaluar(self.referencia["cromosoma"])[0])
+        boton = self._ventana_con_guardar(fig, "resumen")
+        fig.canvas.mpl_connect("button_press_event", lambda e: self._abrir_si_derecho(
+            e, "graficas.py", "fig_resumen"))
+        self._resumen = (fig, boton)
+        ajustar_a_pantalla(fig, 14, 8.6)
+        fig.show()
+        return fig
 
     def _guardar(self, nombre=None):
         nombre = nombre or f"captura_generacion_{self.ag.generacion}.png"
@@ -365,8 +465,11 @@ class Simulador:
             self.ax_rei: ("algoritmo.py", "AlgoritmoGenetico.reiniciar", []),
             self.ax_rep: ("interfaz.py", "Simulador._repetir", []),
             self.ax_pla: ("plantilla.py", "JUGADORES", [("plantilla.py", "ROLES")]),
-            self.ax_gua: ("interfaz.py", "Simulador._guardar", []),
+            self.ax_vgen: ("graficas.py", "dibujar_mejores", [("interfaz.py", "Simulador._ver_genes")]),
+            self.ax_res: ("graficas.py", "fig_resumen", [("graficas.py", "cambios_entre")]),
             self.ax_txt: ("evaluacion.py", "ProblemaAlineacion.detalle", [("interfaz.py", "Simulador._texto")]),
+            self.ax_tit: ("evaluacion.py", "ProblemaAlineacion.detalle",
+                          [("interfaz.py", "Simulador._texto_titulares")]),
             self.ax_can: ("graficas.py", "dibujar_cancha", [("evaluacion.py", "ProblemaAlineacion.evaluar")]),
             self.ax_ver: ("interfaz.py", "Simulador._ver_generacion", []),
             self.ax_con: ("graficas.py", "dibujar_convergencia", [("evaluacion.py", "optimo_sin_quimica")]),
@@ -427,13 +530,24 @@ class Simulador:
         self.fig.canvas.draw_idle()
 
 
-def ajustar_a_pantalla(fig, ancho_pulg=16, alto_pulg=9):
-    """Encoge la ventana completa si la pantalla es más pequeña que la figura.
+# Cuánto se agrandan las letras (y las líneas) en una pantalla pequeña respecto
+# a encoger la ventana de forma proporcional. Con más de 1.25 los títulos y los
+# controles empiezan a chocar en 1366 × 768.
+AUMENTO_LETRA = 1.25
 
-    En vez de cortar la ventana o amontonar los controles, se baja la
-    resolución (dpi) de la figura en la misma proporción: todo, letras
-    incluidas, se ve igual que en una pantalla grande pero más pequeño.
-    Devuelve la escala aplicada (1 = sin cambios).
+
+def ajustar_a_pantalla(fig, ancho_pulg=16, alto_pulg=9, aumento=AUMENTO_LETRA):
+    """Acomoda la ventana si la pantalla es más pequeña que la figura.
+
+    Encoger todo en la misma proporción deja letras de 6 o 7 píxeles en un
+    portátil de 1366 × 768. Por eso, en una pantalla pequeña:
+      * se quita la barra de herramientas de Matplotlib (la ventana ya tiene
+        «Guardar imagen» dentro de «Genes» y «Resumen») y se maximiza la ventana, para usar toda la pantalla;
+      * el dpi baja menos de lo que haría falta para encoger (lupa = aumento):
+        las letras y las líneas, que se miden en puntos, quedan más grandes,
+        y las posiciones de los controles, que son fracciones de la figura,
+        no cambian.
+    Devuelve la escala de la pantalla (1 = sin cambios).
     """
     try:
         ventana = fig.canvas.manager.window
@@ -444,16 +558,27 @@ def ajustar_a_pantalla(fig, ancho_pulg=16, alto_pulg=9):
     dpi = fig.dpi
     escala = min(1.0, (ancho - 40) / (ancho_pulg * dpi), (alto - 120) / (alto_pulg * dpi))
     if escala < 1.0:
+        factor = escala * min(aumento, 1 / escala)   # nunca más grande que en pantalla grande
         # _original_dpi es el dpi sin el factor de pantallas de alta densidad;
         # Matplotlib lo vuelve a multiplicar si cambia ese factor.
         if hasattr(fig, "_original_dpi"):
-            fig._original_dpi *= escala
-        fig.set_dpi(dpi * escala)
-        fig.set_size_inches(ancho_pulg, alto_pulg, forward=True)
+            fig._original_dpi *= factor
+        fig.set_dpi(dpi * factor)
+        barra = getattr(fig.canvas, "toolbar", None)
+        if barra is not None:
+            try:
+                barra.pack_forget()
+            except Exception:
+                pass
+        # Tamaño de la figura = espacio libre de la pantalla (sin barra de tareas ni título).
+        fig.set_size_inches((ancho - 16) / fig.dpi, (alto - 80) / fig.dpi, forward=True)
         try:
-            ventana.geometry("+0+0")                 # esquina superior izquierda
+            ventana.state("zoomed")                  # Windows: maximizada
         except Exception:
-            pass
+            try:
+                ventana.geometry("+0+0")             # otros sistemas: esquina superior izquierda
+            except Exception:
+                pass
     return escala
 
 

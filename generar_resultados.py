@@ -3,7 +3,7 @@ generar_resultados.py
 ---------------------
 Corre todos los experimentos y guarda figuras y números en resultados/.
 
-    python generar_resultados.py      (tarda unos seis minutos)
+    python generar_resultados.py      (tarda unos siete minutos)
 """
 
 import json
@@ -35,10 +35,14 @@ def guardar(fig, nombre):
 def figura_interfaz():
     from interfaz import Simulador
     sim = Simulador()
-    for _ in range(60):
+    while not sim.ag.terminado():          # hasta que se cumpla un criterio de parada
         sim.ag.paso()
     sim._dibujar()
     sim.fig.savefig(os.path.join(CARPETA, "interfaz.png"), dpi=110)
+    for abrir, nombre in ((sim._ver_genes, "ventana_genes.png"), (sim._ver_resumen, "resumen.png")):
+        fig = abrir()
+        fig.savefig(os.path.join(CARPETA, nombre), dpi=110)
+        plt.close(fig)
     plt.close(sim.fig)
     fig = graficas.fig_plantilla()
     guardar(fig, "plantilla.png")
@@ -221,6 +225,28 @@ def figura_quimica(datos):
     guardar(fig, "efecto_quimica.png")
 
 
+def figura_parada(datos):
+    """Generaciones que se corren y éxito con cada combinación de criterios de parada."""
+    criterios = ["Solo máximo (200)", "Máximo + 50 sin mejora", "Máximo + objetivo", "Los tres"]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 4.2))
+    x = np.arange(len(criterios))
+    for k, tam in enumerate((50, 100)):
+        gen = [datos[f"{tam}|{c}"]["generaciones_media"] for c in criterios]
+        exi = [datos[f"{tam}|{c}"]["exito_pct"] for c in criterios]
+        a1.bar(x + (k - 0.5) * 0.38, gen, 0.38, color=PALETA[k], label=f"Población {tam}")
+        a2.bar(x + (k - 0.5) * 0.38, exi, 0.38, color=PALETA[k], label=f"Población {tam}")
+    for a, t, y in ((a1, "Generaciones que se ejecutan (promedio de 30)", "Generaciones"),
+                    (a2, "Corridas que llegan a la mejor alineación", "% de 30 corridas")):
+        a.set_xticks(x)
+        a.set_xticklabels([c.replace(" + ", "\n+ ").replace(" (", "\n(") for c in criterios], fontsize=8.5)
+        a.set_title(t, fontsize=10)
+        a.set_ylabel(y)
+        a.grid(axis="y", alpha=0.3)
+        a.legend(fontsize=8)
+    a2.set_ylim(0, 105)
+    guardar(fig, "criterios_parada.png")
+
+
 def convertir(o):
     if isinstance(o, dict):
         return {str(k): convertir(v) for k, v in o.items()}
@@ -264,6 +290,9 @@ def principal():
     figura_importancia(imp)
     bq = ex.barrido_quimica()
     figura_quimica(bq)
+    print("Criterios de parada...")
+    parada = ex.criterios_parada()
+    figura_parada(parada)
 
     for grupo in [pob, ops] + list(barridos.values()):
         for v in grupo.values():
@@ -273,7 +302,8 @@ def principal():
         json.dump(convertir({"mejor_conocido_442": objetivo, "evolucion_semilla7": evol,
                              "poblacion": pob, "operadores": ops, "parametros": barridos,
                              "quimica_vs_hungaro": quim, "formaciones": form, "lesion": les,
-                             "importancia_titulares": imp, "barrido_quimica": bq}),
+                             "importancia_titulares": imp, "barrido_quimica": bq,
+                             "criterios_parada": parada}),
                   fh, ensure_ascii=False, indent=1)
     print("Listo: resultados/resultados.json")
 

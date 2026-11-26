@@ -98,9 +98,14 @@ class AlgoritmoGenetico:
         self.cfg = replace(self.cfg, **cambios)
 
     def _evaluar(self):
-        self.puntajes = self.problema.evaluar(self.poblacion)
+        # Se redondea a 6 decimales y se ordena de forma estable para que dos
+        # alineaciones empatadas (por ejemplo, dos centrales que solo cambian
+        # de lado) queden siempre en el mismo orden, en cualquier computador:
+        # sin esto, diferencias de redondeo en el último decimal entre Windows
+        # y Linux desempataban distinto y las corridas no se podían repetir.
+        self.puntajes = np.round(self.problema.evaluar(self.poblacion), 6)
         self.evaluaciones += self.puntajes.size
-        orden = np.argsort(-self.puntajes)                    # del mejor al peor
+        orden = np.argsort(-self.puntajes, kind="stable")     # del mejor al peor
         self.poblacion = self.poblacion[orden]
         self.puntajes = self.puntajes[orden]
         if self.puntajes[0] > self.mejor_puntaje + 1e-9:

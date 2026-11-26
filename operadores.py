@@ -54,7 +54,7 @@ def seleccion_ranking(aptitud, n, rng, presion=1.7, **_):
         return np.zeros(n, dtype=int)
     s = float(np.clip(presion, 1.0, 2.0))
     rangos = np.empty(N)
-    rangos[np.argsort(aptitud)] = np.arange(N)
+    rangos[np.argsort(aptitud, kind="stable")] = np.arange(N)
     prob = ((2 - s) + 2 * (s - 1) * rangos / (N - 1)) / N
     return seleccion_ruleta(prob, n, rng)
 
